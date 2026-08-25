@@ -4,9 +4,12 @@ on:
   # Manual trigger for the workflow
   workflow_dispatch:
 
+  # Trigger when changes are pushed to main
+  push:
+    branches:
+      - main
 
 jobs:
-
   # =========================================================
   # Backend Tests
   # =========================================================
@@ -76,12 +79,11 @@ jobs:
       AZURE_STORAGE_CONTAINER_NAME: ""
 
     steps:
-
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -95,7 +97,6 @@ jobs:
         working-directory: ${{ matrix.service }}
         run: |
           pytest -v
-
 
   # =========================================================
   # Build and Push Docker Images
@@ -135,9 +136,8 @@ jobs:
             image: koalatech-enrollment-service
 
     steps:
-
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Login to Azure
         uses: azure/login@v2
